@@ -1,9 +1,7 @@
-# tasks/tasks.py
 from celery import shared_task
 import time
 
-@shared_task
-def sample_task(name):
-    print(f"Processing task for {name}")
+@shared_task(bind=True)
+def sample_task(self):
     time.sleep(5)
-    return f"Task completed for {name}"
+    return f"Task {self.request.id} completed!"
