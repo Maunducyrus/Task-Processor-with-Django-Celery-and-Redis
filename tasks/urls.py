@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import trigger_task, check_task_status
+from .views import task_logs_page
 
 urlpatterns = [
-    path('trigger-task/', trigger_task, name='trigger-task'),
-    path('task-status/<str:task_id>/', check_task_status, name='task-status'),
+    path('logs/', task_logs_page, name='task-logs-page'),
 ]
