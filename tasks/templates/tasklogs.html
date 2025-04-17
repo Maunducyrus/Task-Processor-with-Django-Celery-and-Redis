@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Logs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #3f37c9;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #3f37c9;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Logs</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Task ID</th>
+        <th>Task Name</th>
+        <th>Status</th>
+        <th>Result</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td>{{ log.task_id }}</td>
+        <td>{{ log.task_name }}</td>
+        <td>{{ log.status }}</td>
+        <td>{{ log.result }}</td>
+        <td>{{ log.created_at }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No tasks logged yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
