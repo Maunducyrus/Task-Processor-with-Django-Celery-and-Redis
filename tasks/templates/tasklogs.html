@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Logs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #3f37c9;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #3f37c9;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Logs</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Task ID</th>
+        <th>Task Name</th>
+        <th>Status</th>
+        <th>Result</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody id="log-body">
+      <!-- Logs will be injected here dynamically -->
+    </tbody>
+  </table>
+
+  <script>
+    function fetchLogs() {
+      fetch('/tasks/api/logs/')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.getElementById('log-body');
+          tableBody.innerHTML = ''; // Clear existing rows
+
+          if (data.length === 0) {
+            const emptyRow = `<tr><td colspan="5">No tasks logged yet.</td></tr>`;
+            tableBody.innerHTML = emptyRow;
+          } else {
+            data.forEach(log => {
+              const row = `
+                <tr>
+                  <td>${log.task_id}</td>
+                  <td>${log.name}</td>
+                  <td>${log.status}</td>
+                  <td>${log.result}</td>
+                  <td>${log.created_at}</td>
+                </tr>
+              `;
+              tableBody.innerHTML += row;
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching logs:', error);
+        });
+    }
+
+    // Refresh every 3 seconds
+    setInterval(fetchLogs, 3000);
+    fetchLogs(); // Initial call
+  </script>
+</body>
+</html>
