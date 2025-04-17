@@ -6,7 +6,8 @@ from taskprocessor.celery import app  # make sure this matches your actual celer
 
 # This view triggers the task
 def trigger_task(request):
-    task = sample_task.delay()
+    task = sample_task.delay("Cyrus")
+    # You can pass any arguments to the task here
     return JsonResponse({"message": "Task has been triggered!", "task_id": task.id})
 
 # This view checks the task status
