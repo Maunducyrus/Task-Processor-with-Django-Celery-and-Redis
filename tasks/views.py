@@ -1,20 +1,6 @@
-# tasks/views.py
-from django.http import JsonResponse
-from tasks.tasks import sample_task
-from celery.result import AsyncResult
-from taskprocessor.celery import app  # make sure this matches your actual celery app path
+from django.shortcuts import render
+from .models import TaskLog
 
-# This view triggers the task
-def trigger_task(request):
-    task = sample_task.delay("Cyrus")
-    # You can pass any arguments to the task here
-    return JsonResponse({"message": "Task has been triggered!", "task_id": task.id})
-
-# This view checks the task status
-def check_task_status(request, task_id):
-    result = AsyncResult(task_id, app=app)
-    return JsonResponse({
-        "task_id": task_id,
-        "state": result.state,
-        "result": str(result.result) if result.result else None
-    })
+def task_logs_page(request):
+    logs = TaskLog.objects.all().order_by('-created_at')
+    return render(request, 'tasklogs.html', {'logs': logs})
