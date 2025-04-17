@@ -1,6 +1,12 @@
 from django.http import JsonResponse
 from .models import TaskLog
 
+from django.shortcuts import render
+
+def task_logs_page(request):
+    return render(request, "tasklogs.html")
+
+
 def task_logs_api(request):
     logs = TaskLog.objects.all().order_by('-created_at')
     data = [
