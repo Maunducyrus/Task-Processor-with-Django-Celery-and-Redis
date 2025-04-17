@@ -26,7 +26,8 @@ def trigger_task(request):
 
     TaskLog.objects.create(
         task_id=task.id,
-        task_name='sample_task',
+        # task_name='sample_task',
+        task_name=f"sample_task({name})",
         status='PENDING'
     )
 

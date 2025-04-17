@@ -29,12 +29,13 @@ from tasks.models import TaskLog
 
 @shared_task(bind=True)
 def sample_task(self, name):
-    result = f"Task completed for {name}"
+    # result = f"Task completed for {name}"
+    result_message = f"Task completed for {name}"
     
     # Update the result/status in DB
     TaskLog.objects.filter(task_id=self.request.id).update(
         status='SUCCESS',
-        result=result
+        result=result_message
     )
     
-    return result
+    return result_message
