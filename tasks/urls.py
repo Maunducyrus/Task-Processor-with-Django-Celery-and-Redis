@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import task_logs_page, trigger_task
+from . import views
 
 urlpatterns = [
     path('logs/', task_logs_page, name='task-logs-page'),
