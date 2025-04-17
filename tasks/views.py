@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from celery.result import AsyncResult
 from celery import states
-from .celery import app  # Make sure this matches your celery config
+from taskprocessor.celery import app
 
 def check_task_status(request, task_id):
     result = AsyncResult(task_id, app=app)
