@@ -25,17 +25,18 @@
 #         raise e
 
 from celery import shared_task
-from tasks.models import TaskLog
+from .models import TaskLog
 
 @shared_task(bind=True)
 def sample_task(self, name):
-    # result = f"Task completed for {name}"
-    result_message = f"Task completed for {name}"
-    
-    # Update the result/status in DB
-    TaskLog.objects.filter(task_id=self.request.id).update(
+    result = f"Task completed for {name}"
+
+    # Log to DB
+    TaskLog.objects.create(
+        task_id=self.request.id,
+        task_name='sample_task',
         status='SUCCESS',
-        result=result_message
+        result=result,
     )
-    
-    return result_message
+
+    return result
