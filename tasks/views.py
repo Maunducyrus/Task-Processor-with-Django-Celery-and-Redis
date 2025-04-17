@@ -1,20 +1,19 @@
+# tasks/views.py
 from django.http import JsonResponse
+from tasks.tasks import sample_task
 from celery.result import AsyncResult
-from celery import states
-from taskprocessor.celery import app
+from taskprocessor.celery import app  # make sure this matches your actual celery app path
 
+# This view triggers the task
+def trigger_task(request):
+    task = sample_task.delay()
+    return JsonResponse({"message": "Task has been triggered!", "task_id": task.id})
+
+# This view checks the task status
 def check_task_status(request, task_id):
     result = AsyncResult(task_id, app=app)
-    response_data = {
-        'task_id': task_id,
-        'status': result.status,
-    }
-
-    # Only include result if it's JSON serializable
-    if result.ready():
-        try:
-            response_data['result'] = result.result  # This might raise error if result is an Exception
-        except Exception as e:
-            response_data['result'] = str(e)
-
-    return JsonResponse(response_data)
+    return JsonResponse({
+        "task_id": task_id,
+        "state": result.state,
+        "result": str(result.result) if result.result else None
+    })
